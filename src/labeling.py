@@ -109,20 +109,20 @@ if __name__ == '__main__':
 
     if args[1] == 'train':
         ne_sent_only = True
-        id_file = '/cl/work/shusuke-t/BioIE/data/corpus/id_train.txt'
-        id_anno_file = '/cl/work/shusuke-t/BioIE/data/corpus/id_train_anno_.txt'
+        id_file = '/cl/work/shusuke-t/BioIE/data/corpus/id_data/id_train.txt'
+        id_anno_file = '/cl/work/shusuke-t/BioIE/data/corpus/anno_data/anno_train.txt'
         conllform_file = '/cl/work/shusuke-t/BioIE/data/corpus/conllform/train_conllform.txt'
 
     elif args[1] == 'valid':
         ne_sent_only = False
-        id_file = '/cl/work/shusuke-t/BioIE/data/corpus/id_valid.txt'
-        id_anno_file = '/cl/work/shusuke-t/BioIE/data/corpus/id_valid_anno_.txt'
+        id_file = '/cl/work/shusuke-t/BioIE/data/corpus/id_data/id_valid.txt'
+        id_anno_file = '/cl/work/shusuke-t/BioIE/data/corpus/anno_data/anno_valid.txt'
         conllform_file = '/cl/work/shusuke-t/BioIE/data/corpus/conllform/valid_conllform.txt'
 
     elif args[1] == 'test':
         ne_sent_only = False
-        id_file = '/cl/work/shusuke-t/BioIE/data/corpus/id_test.txt'
-        id_anno_file = '/cl/work/shusuke-t/BioIE/data/corpus/id_test_anno_.txt'
+        id_file = '/cl/work/shusuke-t/BioIE/data/corpus/id_data/id_test.txt'
+        id_anno_file = '/cl/work/shusuke-t/BioIE/data/corpus/anno_data/anno_test.txt'
         conllform_file = '/cl/work/shusuke-t/BioIE/data/corpus/conllform/test_conllform.txt'
 
     with open(id_file, 'r') as r1, open(id_anno_file, 'r') as r2:
