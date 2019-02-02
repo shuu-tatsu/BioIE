@@ -36,7 +36,7 @@ def make_anno_corpus(vocab_list, target_corpus):
     #データからNEを抽出
     extracted_words_list = extract_keywords(target_corpus, keyword_processor) 
     #Write annotation file
-    write_file = target_corpus[:-4] + '_anno_' + target_corpus[-4:]
+    write_file = target_corpus[:37] + 'anno_data/anno_' + target_corpus[48:]
     write_annotation(extracted_words_list, write_file)
 
 
@@ -52,7 +52,7 @@ def write_annotation(extracted_words_list, write_file):
 
 
 def make_ne_founder(vocab_list):
-    keyword_processor = KeywordProcessor(case_sensitive=False)
+    keyword_processor = KeywordProcessor(case_sensitive=True)
     for vocab in tqdm(vocab_list):
         keyword_processor.add_keyword(vocab)
     return keyword_processor
@@ -77,7 +77,7 @@ def remove_duplication(words_list):
 def labeling_id(target_file, train_file, dev_file, eval_file):
     file_list = [train_file, dev_file, eval_file]
     for data_file in file_list:
-        write_file = target_file + 'id_' + data_file[len(target_file):]
+        write_file = target_file + 'id_data/id_' + data_file[(len(target_file)+5):]
         with open(data_file, 'r') as r, open(write_file, 'w') as w:
             sentence_id = 1
             for sentence in r:
@@ -89,16 +89,16 @@ def labeling_id(target_file, train_file, dev_file, eval_file):
 def main(TARGET_FILE, DICT_FILE):
     make_id_corpus = True
     if make_id_corpus:
-        TRAIN_FILE = TARGET_FILE + 'train.txt' 
-        DEV_FILE = TARGET_FILE + 'valid.txt'
-        EVAL_FILE = TARGET_FILE + 'test.txt'
+        TRAIN_FILE = TARGET_FILE + 'orig/train.txt' 
+        DEV_FILE = TARGET_FILE + 'orig/valid.txt'
+        EVAL_FILE = TARGET_FILE + 'orig/test.txt'
         labeling_id(TARGET_FILE, TRAIN_FILE, DEV_FILE, EVAL_FILE)
 
     make_anno_corpus = True
     if make_anno_corpus:
-        TRAIN_FILE = TARGET_FILE + 'id_train.txt' 
-        DEV_FILE = TARGET_FILE + 'id_valid.txt'
-        EVAL_FILE = TARGET_FILE + 'id_test.txt'
+        TRAIN_FILE = TARGET_FILE + 'id_data/id_train.txt' 
+        DEV_FILE = TARGET_FILE + 'id_data/id_valid.txt'
+        EVAL_FILE = TARGET_FILE + 'id_data/id_test.txt'
 
         anno = Annotation(TRAIN_FILE, DEV_FILE, EVAL_FILE, DICT_FILE)
         anno.devide_vocab()
@@ -107,5 +107,5 @@ def main(TARGET_FILE, DICT_FILE):
 
 if __name__ == '__main__':
     TARGET_FILE = '/cl/work/shusuke-t/BioIE/data/corpus/'
-    DICT_FILE = '/cl/work/shusuke-t/BioIE/data/vocab.txt'
+    DICT_FILE = '/cl/work/shusuke-t/BioIE/data/dict/vocab.txt'
     main(TARGET_FILE, DICT_FILE)

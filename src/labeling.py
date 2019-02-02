@@ -37,7 +37,7 @@ def o_token_processing(s_index, e_index, abs_sent):
         if len(token_list[0]) == 0:
             token_list = token_list[1:]
     except IndexError:
-        print('IndexError')
+        pass
     return token_list
 
 
