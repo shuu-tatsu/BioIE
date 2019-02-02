@@ -52,7 +52,8 @@ def write_annotation(extracted_words_list, write_file):
 
 
 def make_ne_founder(vocab_list):
-    keyword_processor = KeywordProcessor(case_sensitive=True)
+    #keyword_processor = KeywordProcessor(case_sensitive=True)
+    keyword_processor = KeywordProcessor(case_sensitive=False)
     for vocab in tqdm(vocab_list):
         keyword_processor.add_keyword(vocab)
     return keyword_processor
