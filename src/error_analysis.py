@@ -49,7 +49,6 @@ class ErrorAnalyser():
         elif rec_error == 1 and pre_error == 0:
             return 'rec'
         else:
-            print('none type')
             return None
 
     def classify(self, one_sent_list, error_type):
@@ -60,27 +59,29 @@ class ErrorAnalyser():
         elif error_type == 'both':
             self.pre_error_list.append(one_sent_list)
             self.rec_error_list.append(one_sent_list)
+        else:
+            pass
 
-    def print_error(self, error_type):
+    def print_error(self, error_type, write_file):
+        w = open(write_file, 'w')
         if error_type == 'pre':
-            print('##')
-            print('## Precision Error Sentences')
-            print('## False Positive')
-            print('##')
-            self.printout(self.pre_error_list)
+            # Precision Error Sentences
+            # False Positive
+            w = self.printout(self.pre_error_list, w)
         elif error_type == 'rec':
-            print('##')
-            print('## Recall Error Sentences')
-            print('## False Negative')
-            print('##')
-            self.printout(self.rec_error_list)
+            # Recall Error Sentences
+            # False Negative
+            w = self.printout(self.rec_error_list, w)
+        else:
+            pass
+        w.close()
 
-    def printout(self, error_list):
+    def printout(self, error_list, w):
         for sent in error_list:
             for word in sent:
-                print(word.strip())
-            print('')
-
+                w.write(word)
+            w.write('\n')
+        return w
 
 def load(read_file):
     with open(read_file, 'r') as r:
@@ -120,8 +121,11 @@ def find_eos(index, word, word_list):
 
 def main():
     # data
-    READ_FILE = '/cl/work/shusuke-t/flair_myLM_normal/resources/taggers/BioIE/bio01_insense/test.tsv'
-    #READ_FILE = '/cl/work/shusuke-t/flair_myLM_normal/resources/taggers/BioIE/bio01_insense/toy.tsv'
+    #READ_FILE = '/cl/work/shusuke-t/flair_myLM_normal/resources/taggers/BioIE/bio01_insense/test.tsv'
+    #READ_FILE = '/cl/work/shusuke-t/flair_myLM_normal/resources/taggers/BioIE/bio02_sense/test.tsv'
+    READ_FILE = '/cl/work/shusuke-t/flair_myLM_normal/resources/taggers/BioIE/bio01_insense/toy.tsv'
+    WRITE_FILE_PRE = '/cl/work/shusuke-t/BioIE/data/error_analysis/fp_error.txt'
+    WRITE_FILE_REC = '/cl/work/shusuke-t/BioIE/data/error_analysis/fn_error.txt'
 
     # preparing data
     word_list = load(READ_FILE)
@@ -130,8 +134,8 @@ def main():
     # analysing data
     analyser = ErrorAnalyser(all_sent_list)
     analyser.discriminate()
-    analyser.print_error('pre')
-    analyser.print_error('rec')
+    analyser.print_error('pre', WRITE_FILE_PRE)
+    analyser.print_error('rec', WRITE_FILE_REC)
 
 
 if __name__ == '__main__':
