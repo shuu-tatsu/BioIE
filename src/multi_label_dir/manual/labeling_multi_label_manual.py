@@ -4,6 +4,7 @@
 from tqdm import tqdm
 import sys
 import re
+import split_sent
 
 def preprocessing(sentence):
     sentence = sentence.replace(')', ' ) ')
@@ -167,3 +168,6 @@ if __name__ == '__main__':
                 labeled_token_list.append('')
                 write_file(w, labeled_token_list)
     w.close()
+
+    if args[1] == 'test':
+        split_sent.main()
