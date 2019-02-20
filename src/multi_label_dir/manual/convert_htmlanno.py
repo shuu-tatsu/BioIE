@@ -49,7 +49,7 @@ class Converter():
             title_str = soup.html.body.h1
             abst_str = soup.html.body.p
             #改行をスペースに変換
-            text_str = (title_str.string + abst_str.string).replace('\n','\s')
+            text_str = ('\n' + title_str.string + '\n' + abst_str.string).replace('\n',' ')
             extracted_list.append((abst_id, text_str))
 
         #ファイル書き込み
@@ -82,8 +82,10 @@ class Converter():
                     anno_type = anno_info[0][0]
                     position = anno_info[1][0]
                     try:
-                        s_posi = position.strip('[], ').split(',')[0]
-                        e_posi = position.strip('[], ').split(',')[1]
+                        s_posi_temp = position.strip('[], ').split(',')[0]
+                        e_posi_temp = position.strip('[], ').split(',')[1]
+                        s_posi = min(s_posi_temp, e_posi_temp)
+                        e_posi = max(s_posi_temp, e_posi_temp)
                     except IndexError:
                         s_posi = -1
                         e_posi = -1
