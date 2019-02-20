@@ -14,6 +14,7 @@ class Splitter():
         token_list = self.load()
         splitted_list = self.find_boundary(token_list)
         self.write(splitted_list)
+        os.remove(self.read_file)
 
     def find_boundary(self, token_list):
         splitted_list = []
@@ -60,10 +61,8 @@ class Splitter():
 
 def main():
     TARGET_DIR = '/cl/work/shusuke-t/BioIE/data/multi_label_corpus/manual/conllform/'
-    try:
-        os.rename(TARGET_DIR + 'test_conllform.txt', TARGET_DIR + 'test_conllform_orig.txt')
-    except FileNotFoundError:
-        pass
+
+    os.rename(TARGET_DIR + 'test_conllform.txt', TARGET_DIR + 'test_conllform_orig.txt')
 
     READ_FILE = TARGET_DIR + 'test_conllform_orig.txt'
     WRITE_FILE = TARGET_DIR + 'test_conllform.txt'
