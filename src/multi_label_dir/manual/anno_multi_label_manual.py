@@ -14,7 +14,7 @@ class Annotation():
         self.dev_file = DEV_FILE
         #self.eval_file = EVAL_FILE
         self.gene_list = self.load(dict_list[0])
-        self.protein_list = self.load(dict_list[1])
+        self.chemical_list = self.load(dict_list[1])
 
     def load(self, dict_file):
         with open(dict_file, 'r') as r:
@@ -22,18 +22,18 @@ class Annotation():
         return vocab_list
 
     def make_annotation(self):
-        make_anno_corpus(self.gene_list, self.protein_list, self.train_file)
-        make_anno_corpus(self.gene_list, self.protein_list, self.dev_file)
-        #make_anno_corpus(self.gene_list, self.protein_list, self.eval_file)
+        make_anno_corpus(self.gene_list, self.chemical_list, self.train_file)
+        make_anno_corpus(self.gene_list, self.chemical_list, self.dev_file)
+        #make_anno_corpus(self.gene_list, self.chemical_list, self.eval_file)
 
 
-def make_anno_corpus(gene_list, protein_list, target_corpus):
+def make_anno_corpus(gene_list, chemical_list, target_corpus):
     #NE抽出器生成
     #遺伝子は大文字小文字の区別あり、タンパク質は区別なし
     gene_processor = make_ne_founder(gene_list, case=True)
-    protein_processor = make_ne_founder(protein_list, case=False)
+    chemical_processor = make_ne_founder(chemical_list, case=False)
     #データからNEを抽出
-    extracted_words_list = extract_keywords(target_corpus, gene_processor, protein_processor) 
+    extracted_words_list = extract_keywords(target_corpus, gene_processor, chemical_processor) 
     #Write annotation file
     write_file = target_corpus[:56] + 'anno_data/anno_' + target_corpus[67:]
     write_annotation(extracted_words_list, write_file)
@@ -62,24 +62,24 @@ def make_ne_founder(vocab_list, case):
     return keyword_processor
 
 
-def extract_keywords(target_corpus, gene_processor, protein_processor):
+def extract_keywords(target_corpus, gene_processor, chemical_processor):
     with open(target_corpus, 'r') as r:
         sentences = [sentence.split('\t') for sentence in r]
     extracted_words_list = []
     for sent_id, sentence in tqdm(sentences):
         gene_found_list = gene_processor.extract_keywords(sentence, span_info=True)
-        protein_found_list = protein_processor.extract_keywords(sentence, span_info=True)
+        chemical_found_list = chemical_processor.extract_keywords(sentence, span_info=True)
 
-        sorted_list = sort_list(sent_id, gene_found_list, protein_found_list)
+        sorted_list = sort_list(sent_id, gene_found_list, chemical_found_list)
         extracted_words_list.append(sorted_list)
     return extracted_words_list
 
 
-def sort_list(sent_id, gene_found_list, protein_found_list):
+def sort_list(sent_id, gene_found_list, chemical_found_list):
     #同一センテンス内でのソート
     temp_list = []
     temp_list.extend([(sent_id, gene_found, 'gene') for gene_found in gene_found_list])
-    temp_list.extend([(sent_id, protein_found, 'protein') for protein_found in protein_found_list])
+    temp_list.extend([(sent_id, chemical_found, 'chemical') for chemical_found in chemical_found_list])
     sorted_list = sorted(temp_list, key=lambda x: x[1][1])
     return sorted_list
 
@@ -122,6 +122,6 @@ if __name__ == '__main__':
     #TARGET_FILE = '/cl/work/shusuke-t/BioIE/data/multi_label_corpus/dsv/'
     TARGET_FILE = '/cl/work/shusuke-t/BioIE/data/multi_label_corpus/manual/'
     GENE = '/cl/work/shusuke-t/BioIE/2019_02_05_data_nomura/gene/ecocyc/gene_ecocyc.txt'
-    PROTEIN = '/cl/work/shusuke-t/BioIE/2019_02_12_parse_drugbank_ipynb/data/protein_drugbank.txt'
-    dict_list = [GENE, PROTEIN]
+    CHEM = '/cl/work/shusuke-t/BioIE/2019_02_12_parse_drugbank_ipynb/data/drugbank.txt'
+    dict_list = [GENE, CHEM]
     main(TARGET_FILE, dict_list)
