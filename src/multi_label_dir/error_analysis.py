@@ -137,7 +137,9 @@ def main(read_file, fp_write_file, fn_write_file):
 
 if __name__ == '__main__':
     # Data
-    read_file = '/cl/work/shusuke-t/flair_myLM_normal/resources/taggers/BioIE/bio_multi_label_0306manual_all_ne/test.tsv'
-    fp_write_file = '/cl/work/shusuke-t/flair_myLM_normal/resources/taggers/BioIE/bio_multi_label_0306manual_all_ne/fp_error.txt'
-    fn_write_file = '/cl/work/shusuke-t/flair_myLM_normal/resources/taggers/BioIE/bio_multi_label_0306manual_all_ne/fn_error.txt'
+    #target_dir = '/cl/work/shusuke-t/flair_myLM_normal/resources/taggers/BioIE/bio_multi_label_0306manual_all_ne/'
+    target_dir = '/cl/work/shusuke-t/flair_myLM_normal/resources/taggers/BioIE/bio_multi_label_0306manual/'
+    read_file = target_dir + 'test.tsv'
+    fp_write_file = target_dir + 'fp_error.txt'
+    fn_write_file = target_dir + 'fn_error.txt'
     main(read_file, fp_write_file, fn_write_file)
