@@ -84,8 +84,8 @@ class Converter():
                     try:
                         s_posi_temp = position.strip('[], ').split(',')[0]
                         e_posi_temp = position.strip('[], ').split(',')[1]
-                        s_posi = min(s_posi_temp, e_posi_temp)
-                        e_posi = max(s_posi_temp, e_posi_temp)
+                        s_posi = str(min(int(s_posi_temp), int(e_posi_temp)))
+                        e_posi = str(max(int(s_posi_temp), int(e_posi_temp)))
                     except IndexError:
                         s_posi = -1
                         e_posi = -1
