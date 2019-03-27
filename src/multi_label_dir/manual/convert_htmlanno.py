@@ -124,6 +124,11 @@ class AnnoParser():
                 info_str = re.sub('[\n\s"]', '', anno_info).split('=')[-1:]
                 entity_info_list.append(info_str)
             extracted_info_list.append(entity_info_list)
+        sorted_list = self.sort_ne(extracted_info_list)
+        return sorted_list
+
+    def sort_ne(self, extracted_info_list):
+        extracted_info_list.sort(key=lambda s:int(re.sub('[\[\]]', '', s[1][0]).split(',')[0]))
         return extracted_info_list
 
     def get_tuple_index(self, start_index_list):
@@ -140,7 +145,7 @@ class AnnoParser():
 
 def main():
     # data
-    READ_DIR = '/cl/work/shusuke-t/BioIE/2019_02_05_data_nomura/manual_anno0220/'
+    READ_DIR = '/cl/work/shusuke-t/BioIE/2019_03_05_proteingeneenzyme2/able_file/'
     WRITE_DIR = '/cl/work/shusuke-t/BioIE/data/multi_label_corpus/manual/'
     ANNO_DATA_DIR = WRITE_DIR + 'anno_data/'
     ID_DATA_DIR = WRITE_DIR + 'id_data/'
